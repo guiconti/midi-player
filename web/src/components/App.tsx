@@ -8,7 +8,6 @@ import {
 
 import Home from "./pages/Home";
 import Example from "./pages/Example";
-import Foo from "./pages/Foo";
 import Bar from "./pages/Bar";
 import NotFound from "./pages/NotFound";
 
@@ -26,10 +25,6 @@ const App: React.FC = () => {
           Example
         </NavLink>
         {" | "}
-        <NavLink to="/foo" activeClassName={styles.activeStyle}>
-          Foo
-        </NavLink>
-        {" | "}
         <NavLink to="/bar" activeClassName={styles.activeStyle}>
           Bar
         </NavLink>
@@ -37,7 +32,6 @@ const App: React.FC = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/example" component={Example} />
-        <Route path="/foo" component={Foo} />
         <Route path="/bar" component={Bar} />
         <Route component={NotFound} />
       </Switch>

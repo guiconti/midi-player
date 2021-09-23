@@ -1,13 +1,13 @@
 import React from "react";
 
 import Header from "../../elements/Header";
-import BarContainer from "../../containers/BarContainer";
+import KeyBoard from "../../containers/KeyboardContainer";
 
 const Bar: React.FC = () => {
   return (
     <div>
       <Header>Bar</Header>
-      <BarContainer />
+      <KeyBoard />
     </div>
   );
 };

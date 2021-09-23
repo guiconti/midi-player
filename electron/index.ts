@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, Menu, MenuItem } from "electron";
+import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 
 function createWindow() {
   // Create the browser window.
@@ -12,23 +12,39 @@ function createWindow() {
     },
   });
   mainWindow.removeMenu();
-  mainWindow.loadURL("http://localhost:3000/");
+  mainWindow.loadURL('http://localhost:3000/');
+
+  // mainWindow.webContents.on(
+  //   'select-bluetooth-device',
+  //   (event, deviceList, callback) => {
+  //     event.preventDefault();
+  //     console.log(deviceList);
+  //     // const result = deviceList.find((device) => {
+  //     //   return device.deviceName === 'test'
+  //     // })
+  //     // if (!result) {
+  //     //   callback('')
+  //     // } else {
+  //     //   callback(result.deviceId)
+  //     // }
+  //   },
+  // );
 
   const menu = new Menu();
   menu.append(
     new MenuItem({
-      label: "Electron",
+      label: 'Electron',
       submenu: [
         {
-          role: "help",
+          role: 'help',
           accelerator:
-            process.platform === "darwin" ? "Alt+Cmd+I" : "Alt+Shift+I",
+            process.platform === 'darwin' ? 'Alt+Cmd+I' : 'Alt+Shift+I',
           click: () => {
             mainWindow.webContents.toggleDevTools();
           },
         },
       ],
-    })
+    }),
   );
 
   Menu.setApplicationMenu(menu);
@@ -40,7 +56,7 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  app.on("activate", function () {
+  app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -50,6 +66,6 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") app.quit();
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
 });
