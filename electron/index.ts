@@ -43,6 +43,14 @@ function createWindow() {
             mainWindow.webContents.toggleDevTools();
           },
         },
+        {
+          role: 'reload',
+          accelerator:
+            process.platform === 'darwin' ? 'Alt+Cmd+R' : 'Alt+Shift+R',
+          click: () => {
+            app.relaunch();
+          },
+        },
       ],
     }),
   );

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PolySynth, now } from 'tone';
+import { now } from 'tone';
 
-import { Button } from '../elements';
-import { useBluetoothMidi } from '../../hooks';
+import { Button, Slider } from '../elements';
+import { useBluetoothMidi, useSynth } from '../../hooks';
 import { keys } from '../../constants';
 
 const KeyboardContainer: React.FC = () => {
-  const [synth, setSynth] = useState<PolySynth>(new PolySynth().toDestination());
   const midi = useBluetoothMidi();
+  const synth = useSynth();
+  const [volume, setVolume] = useState<number>(-50);
 
   const onKeyPressed = useCallback(
     (event: Event) => {
@@ -27,7 +28,7 @@ const KeyboardContainer: React.FC = () => {
         const note = keys[data.getUint8(i + 1)];
         const velocity = data.getUint8(i + 2);
         if (on) {
-          synth.triggerAttack(note, now(), velocity);
+          synth.triggerAttack(note, now(), 1);
         } else {
           synth.triggerRelease(note, now());
         }
@@ -55,14 +56,35 @@ const KeyboardContainer: React.FC = () => {
     midi.addEventListener('characteristicvaluechanged', onKeyPressed);
   }, [midi]);
 
+  useEffect(() => {
+    if (!synth) {
+      return;
+    }
+    const minValue = -100;
+    const maxVolume = 0;
+    const newValue = volume - (maxVolume - minValue);
+    synth.volume.value = newValue;
+  }, [synth, volume]);
+
   const onResetSynth = useCallback(() => {
     if (synth) {
       synth.releaseAll();
     }
   }, [synth]);
 
+  const onVolumeChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!synth) {
+        return;
+      }
+      setVolume(parseInt(event.target.value));
+    },
+    [synth],
+  );
+
   return (
     <div>
+      <Slider value={volume} onChange={onVolumeChange} />
       <Button onClick={onResetSynth}>Reset synth</Button>
     </div>
   );
