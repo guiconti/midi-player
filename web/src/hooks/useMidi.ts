@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function useMidi() {
+export default function useMidi(): [WebMidi.MIDIAccess | undefined, () => void] {
   const [midi, setMidi] = useState<WebMidi.MIDIAccess>();
 
   function onMidiAccessGranted(midiAccess: WebMidi.MIDIAccess) {
@@ -12,15 +12,23 @@ export default function useMidi() {
     console.error('Midi access refused.');
   }
 
-  if (!midi) {
+  function getMidiAccess() {
+    if (midi) {
+      console.log('Midi already connected');
+      return;
+    }
     if (!navigator.requestMIDIAccess) {
       console.error('Browser does not support MIDI access');
       return;
     }
-    navigator
-      .requestMIDIAccess()
-      .then(onMidiAccessGranted, onMidiAccessRefused);
+    navigator.requestMIDIAccess().then(onMidiAccessGranted, onMidiAccessRefused);
   }
 
-  return midi;
+  useEffect(() => {
+    if (!midi) {
+      getMidiAccess();
+    }
+  }, []);
+
+  return [midi, getMidiAccess];
 }

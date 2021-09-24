@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./Header.less";
+import styles from './Header.less';
 
 const Header: React.FC = ({ children }: React.PropsWithChildren<{}>) => {
   return (
